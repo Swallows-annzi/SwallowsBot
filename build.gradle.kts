@@ -7,11 +7,15 @@ plugins {
 }
 
 group = "org.example"
-version = "0.1.0"
+version = "1.0.0"
 
 repositories {
     if (System.getenv("CI")?.toBoolean() != true) {
         maven("https://maven.aliyun.com/repository/public") // 阿里云国内代理仓库
     }
     mavenCentral()
+}
+
+dependencies {
+    implementation("org.yaml:snakeyaml:2.2")
 }
