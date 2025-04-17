@@ -1,29 +1,27 @@
 package org.swallows.swallowsbot.event;
 
-import kotlin.coroutines.CoroutineContext;
-import net.mamoe.mirai.event.EventHandler;
-import net.mamoe.mirai.event.SimpleListenerHost;
+import net.mamoe.mirai.event.GlobalEventChannel;
+import net.mamoe.mirai.event.ListenerHost;
+import net.mamoe.mirai.event.events.BotEvent;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.message.data.MessageChain;
-import org.jetbrains.annotations.NotNull;
 import org.swallows.swallowsbot.SwallowsBot;
 import org.swallows.swallowsbot.Util;
 
-public class GroupMessageEventHandler extends SimpleListenerHost {
+public class GroupMessageEventHandler implements ListenerHost {
 
     public GroupMessageEventHandler() {
+
+        GlobalEventChannel.INSTANCE
+                .filter(ev -> ev instanceof BotEvent && Util.isBot(((BotEvent) ev).getBot().getId()))
+                .subscribeAlways(GroupMessageEvent.class, this::onMessage);
+        
     }
 
-    @Override
-    public void handleException(@NotNull CoroutineContext context, @NotNull Throwable exception) {
-        super.handleException(context, exception);
-    }
-
-    @EventHandler
-    public void onMessage(@NotNull GroupMessageEvent event) {
-        if(Util.isBot(event.getBot().getId()) && Util.isGroupID(event.getGroup().getId())) {
+    public void onMessage(GroupMessageEvent event) {
+        if(Util.isGroupID(event.getGroup().getId())) {
             MessageChain message = event.getMessage();
-            SwallowsBot.INSTANCE.logger.info(message.toString());
+            SwallowsBot.INSTANCE.logger.info("喵喵喵");
         }
     }
 }
