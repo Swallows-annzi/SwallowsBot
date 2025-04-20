@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class ConfigLoader {
+
     private static final String CONFIG_PATH = "config/" + SwallowsBot.BOT_NAME + ".yml";
 
     public static void load() {
