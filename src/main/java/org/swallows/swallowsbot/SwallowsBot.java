@@ -4,7 +4,6 @@ import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
 import net.mamoe.mirai.event.GlobalEventChannel;
-import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.utils.MiraiLogger;
 import org.swallows.swallowsbot.command.CommandBase;
 import org.swallows.swallowsbot.command.permissionzero.*;
@@ -42,6 +41,8 @@ public final class SwallowsBot extends JavaPlugin {
         ConfigLoader.load();
         SwallowsDir.load();
         RaffleDataLoader.formRaffle();
+
+//        Bot bot = Bot.getInstance(SwallowsBotConfig.BotID);
 
         logger.info("载入监听器...");
         registerCommand(Help.INSTANCE.CommandName, Help.INSTANCE);

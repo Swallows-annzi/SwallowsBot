@@ -111,11 +111,17 @@ public class QueryRaffle extends CommandBase {
                     msg.append("中奖玩家：未开奖").append(CommandBase.WRAP);
                 if(raffle.getState() == 0) {
                     List<Long> userIDs = raffle.getJackpots();
-                    for (int i = 0; i < userIDs.size(); i++) {
-                        msg.append("中奖玩家：").append(String.valueOf(userIDs.get(i))).append("(").append(event.getGroup().get(userIDs.get(i)).getNick()).append(")");
-                        if(i != userIDs.size() - 1)
-                            msg.append("、");
+                    if(!userIDs.isEmpty()) {
+                        for (int i = 0; i < userIDs.size(); i++) {
+                            msg.append("中奖玩家：").append(String.valueOf(userIDs.get(i))).append("(").append(event.getGroup().get(userIDs.get(i)).getNick()).append(")");
+                            if(i != userIDs.size() - 1)
+                                msg.append("、");
+                        }
                     }
+                    else {
+                        msg.append("中奖玩家：无");
+                    }
+
                     msg.append(CommandBase.WRAP);
                 }
                 msg.append("抽奖创建时间：").append(Util.formTimeToChinese(raffle.getRaffleTime())).append(CommandBase.WRAP);

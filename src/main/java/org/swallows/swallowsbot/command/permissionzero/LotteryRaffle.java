@@ -69,7 +69,6 @@ public class LotteryRaffle extends CommandBase {
 
         if(args.size() == 3) {
             List<RaffleData> GroupCbs = Util.getGroupCbs(event);
-            Collections.reverse(GroupCbs);
 
             if(Util.isInteger(args.get(1)) && Util.isInteger(args.get(2))) {
                 int no = (Integer.parseInt(args.get(1)) - 1) * 10 + Integer.parseInt(args.get(2));
