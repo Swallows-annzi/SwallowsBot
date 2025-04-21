@@ -50,7 +50,7 @@ public class JoinRaffle extends CommandBase {
                     Util.sendMessageToGroup( new MessageChainBuilder()
                                     .append(
                                             new At(user.getId()).plus(CommandBase.WRAP)
-                                                    .plus("您当前已加入抽奖！")
+                                                    .plus("您当前已加入该抽奖！")
                                     )
                                     .build()
                             , event.getGroup()
@@ -108,12 +108,61 @@ public class JoinRaffle extends CommandBase {
                 LocalDateTime now = LocalDateTime.now();
                 String time = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss"));
                 String st = Util.parseTime(raffle.getStartTime(), now);
+                String et = Util.parseTime(raffle.getEndTime(), now);
 
                 if(!Util.compareTime(st, time)) {
                     Util.sendMessageToGroup( new MessageChainBuilder()
                                     .append(
                                             new At(user.getId()).plus(CommandBase.WRAP)
                                                     .plus("暂未到开始时间！")
+                                    )
+                                    .build()
+                            , event.getGroup()
+                    );
+                    return;
+                }
+
+                if(raffle.getState() == 0) {
+                    Util.sendMessageToGroup( new MessageChainBuilder()
+                                    .append(
+                                            new At(user.getId()).plus(CommandBase.WRAP)
+                                                    .plus("该抽奖已结束！")
+                                    )
+                                    .build()
+                            , event.getGroup()
+                    );
+                    return;
+                }
+
+                if(raffle.getState() == -1) {
+                    Util.sendMessageToGroup( new MessageChainBuilder()
+                                    .append(
+                                            new At(user.getId()).plus(CommandBase.WRAP)
+                                                    .plus("该抽奖已终止！")
+                                    )
+                                    .build()
+                            , event.getGroup()
+                    );
+                    return;
+                }
+
+                if(raffle.getState() == 2) {
+                    Util.sendMessageToGroup( new MessageChainBuilder()
+                                    .append(
+                                            new At(user.getId()).plus(CommandBase.WRAP)
+                                                    .plus("该抽奖已暂停！")
+                                    )
+                                    .build()
+                            , event.getGroup()
+                    );
+                    return;
+                }
+
+                if(raffle.getState() == 1 &&  Util.isParticipants(raffle, user.getId()) ) {
+                    Util.sendMessageToGroup( new MessageChainBuilder()
+                                    .append(
+                                            new At(user.getId()).plus(CommandBase.WRAP)
+                                                    .plus("您当前已加入该抽奖！")
                                     )
                                     .build()
                             , event.getGroup()

@@ -94,6 +94,27 @@ public class ModifyRaffle extends CommandBase {
                 else {
 
                     RaffleData raffle = GroupCbs.get(no - 1);
+
+                    if(raffle.getState() == -1) {
+                        Util.sendMessageToGroup(
+                                new MessageChainBuilder()
+                                        .append("该抽奖已被中止！").append(CommandBase.WRAP)
+                                        .build()
+                                , event.getGroup()
+                        );
+                        return;
+                    }
+
+                    if(raffle.getState() == 0) {
+                        Util.sendMessageToGroup(
+                                new MessageChainBuilder()
+                                        .append("该抽奖已结束！").append(CommandBase.WRAP)
+                                        .build()
+                                , event.getGroup()
+                        );
+                        return;
+                    }
+
                     MessageChainBuilder msc = new  MessageChainBuilder();
 
                     if(cmdData.containsKey("中奖人数")) {
