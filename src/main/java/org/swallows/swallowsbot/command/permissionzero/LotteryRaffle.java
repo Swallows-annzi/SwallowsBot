@@ -38,7 +38,7 @@ public class LotteryRaffle extends CommandBase {
             for (RaffleData raffle : GroupCbs) {
 
                 if(raffle.getState() == 1) {
-                    List<Long> IDs = Util.onLottery(event, raffle);
+                    List<Long> IDs = Util.onLottery(event.getGroup(), raffle);
                     raffle.setState(0);
                     raffle.setJackpots(IDs);
                     RaffleDataLoader.saveRaffle(raffle);
@@ -84,7 +84,7 @@ public class LotteryRaffle extends CommandBase {
                 }
 
                 RaffleData raffle = GroupCbs.get(no - 1);
-                List<Long> IDs = Util.onLottery(event, raffle);
+                List<Long> IDs = Util.onLottery(event.getGroup(), raffle);
                 raffle.setState(0);
                 raffle.setJackpots(IDs);
                 RaffleDataLoader.saveRaffle(raffle);

@@ -42,8 +42,6 @@ public final class SwallowsBot extends JavaPlugin {
         SwallowsDir.load();
         RaffleDataLoader.formRaffle();
 
-//        Bot bot = Bot.getInstance(SwallowsBotConfig.BotID);
-
         logger.info("载入监听器...");
         registerCommand(Help.INSTANCE.CommandName, Help.INSTANCE);
         registerCommand(CreateRaffle.INSTANCE.CommandName, CreateRaffle.INSTANCE);
@@ -58,7 +56,7 @@ public final class SwallowsBot extends JavaPlugin {
 
         GlobalEventChannel.INSTANCE.registerListenerHost(new GroupMessageEventHandler());
 
-//        Util.startWatching();
+        Util.startWatching(Bot.getInstance(SwallowsBotConfig.BotID));
     }
 
     @Override

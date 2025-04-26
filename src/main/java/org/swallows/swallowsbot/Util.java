@@ -227,13 +227,11 @@ public class Util {
         return raffle.getParticipants().contains(ID);
     }
 
-    public static List<Long> onLottery(GroupMessageEvent event, RaffleData raffle) {
+    public static List<Long> onLottery(Group group, RaffleData raffle) {
 
         if(raffle.getMode().equals("N")) {
 
             List<Long> copy = new ArrayList<>(raffle.getParticipants());
-
-            Group group = event.getGroup();
 
             for (Long id : copy) {
                 if(group.get(id) == null) {
@@ -256,35 +254,38 @@ public class Util {
         }
     }
 
-//    public static void startWatching() {
-//        RaffleData[] cbs = SwallowsBot.INSTANCE.getRaffles().values().toArray(new RaffleData[0]);
-//
-//        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-//
-//        scheduler.scheduleAtFixedRate(() -> {
-//            LocalDateTime now = LocalDateTime.now();
-//            String time = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss"));
-//
-//            for (RaffleData raffle : cbs) {
-//                if(raffle.getEndTime().equals(time) || compareTime(raffle.getEndTime(), time)) {
-//                    List<Long> IDs = onLottery(raffle);
-//                    raffle.setState(0);
-//                    raffle.setJackpots(IDs);
-//                    RaffleDataLoader.saveRaffle(raffle);
-//
-//                    MessageChainBuilder msg = new MessageChainBuilder();
-//
-//                    for (Long id : IDs) {
-//                        At at = new At(id);
-//                        msg.append(at);
-//                    }
-//
-//                    msg.append("恭喜抽中").append(raffle.getRaffleName()).append("的奖励，大伙快恭喜他们！");
-//
-//                    Util.sendMessageToGroup(msg.build(), SwallowsBot.bot.getGroup(raffle.getGroupID()));
-//                }
-//            }
-//        }, 0, 1, TimeUnit.SECONDS);
-//    }
+    public static void startWatching(Bot bot) {
+        RaffleData[] cbs = SwallowsBot.INSTANCE.getRaffles().values().toArray(new RaffleData[0]);
+
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+        scheduler.scheduleAtFixedRate(() -> {
+            LocalDateTime now = LocalDateTime.now();
+            String time = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss"));
+
+            for (RaffleData raffle : cbs) {
+                if(raffle.getEndTime().equals(time) || compareTime(raffle.getEndTime(), time)) {
+
+                    Group group = bot.getGroup(raffle.getGroupID());
+
+                    List<Long> IDs = onLottery(group, raffle);
+                    raffle.setState(0);
+                    raffle.setJackpots(IDs);
+                    RaffleDataLoader.saveRaffle(raffle);
+
+                    MessageChainBuilder msg = new MessageChainBuilder();
+
+                    for (Long id : IDs) {
+                        At at = new At(id);
+                        msg.append(at);
+                    }
+
+                    msg.append("恭喜抽中").append(raffle.getRaffleName()).append("的奖励，大伙快恭喜他们！");
+
+                    Util.sendMessageToGroup(msg.build(), group);
+                }
+            }
+        }, 0, 1, TimeUnit.SECONDS);
+    }
 
 }
